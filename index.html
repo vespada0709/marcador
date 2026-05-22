@@ -142,7 +142,6 @@ body {
     gap: 0.5vw;
 }
 
-/* ==== BOTONES + Y - PLANOS ==== */
 .score-button {
     background: none;
     border: none;
@@ -159,7 +158,6 @@ body {
     color: white;
     transform: none;
 }
-/* ================================= */
 
 .center-image {
     width: 25vw;
@@ -197,9 +195,9 @@ body {
     padding: 2.5vh 4vw;
     border-radius: 2vw;
     text-align: center;
-    width: 35vw;
+    width: 38vw;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    max-height: 80vh;
+    max-height: 85vh;
     overflow-y: auto;
 }
 
@@ -213,22 +211,34 @@ body {
 }
 
 h3 { font-size: 2.5vw; margin-bottom: 2vh; color: #ffcc00; }
+label { font-size: 1.8vw; margin: 1.2vh 0; display: block; text-align: left; }
 
-label { font-size: 2vw; margin: 1vh 0; display: block; }
+.label-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 input[type="text"], input[type="number"] {
-    font-size: 2vw;
+    font-size: 1.8vw;
     padding: 0.4vw;
-    margin-top: 0.4vh;
-    width: 5vw;
     border: 1px solid #ffcc00;
     background: #333;
     color: white;
     border-radius: 0.5vw;
 }
+input[type="number"] { width: 5vw; text-align: center; }
+input[type="text"] { width: 15vw; }
+
+input[type="checkbox"] {
+    width: 2.2vw;
+    height: 2.2vw;
+    cursor: pointer;
+    accent-color: #ffcc00;
+}
 
 button#save-settings, button#set-1-minute, button#set-5-minutes, button#set-10-minutes, button#set-20-minutes {
-    font-size: 2vw;
+    font-size: 1.8vw;
     padding: 0.8vh 1.5vw;
     background: #ffcc00;
     color: black;
@@ -236,6 +246,7 @@ button#save-settings, button#set-1-minute, button#set-5-minutes, button#set-10-m
     border-radius: 1vw;
     cursor: pointer;
     margin-top: 1.5vh;
+    margin-right: 0.5vw;
 }
 
 button#save-settings:hover, button#set-1-minute:hover, button#set-5-minutes:hover,
@@ -260,18 +271,24 @@ button#set-10-minutes:hover, button#set-20-minutes:hover { background: #ff9900; 
     bottom: 2vh;
     left: 2vw;
     background: none;
-    width: 4.5vw;
-    height: 4.5vw;
+    width: 7vw;
+    height: 7vw;
     cursor: pointer;
     z-index: 1001;
     border: none;
     padding: 0;
 }
 
-.buzzer-icon { width: 100%; height: 100%; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.buzzer-icon { 
+    width: 100%; 
+    height: 100%; 
+    fill: none; 
+    stroke: white; 
+    stroke-width: 2.5; 
+    stroke-linecap: round; 
+    stroke-linejoin: round; 
+}
 
-/* ===================== */
-/* Quitar borde azul y resaltado táctil en todos los elementos */
 *:focus {
     outline: none !important;
     box-shadow: none !important;
@@ -281,7 +298,6 @@ button, input, textarea, div, img {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 }
-/* ===================== */
 
 @media (max-width: 600px) {
     #timer { font-size: 35vw; }
@@ -291,8 +307,13 @@ button, input, textarea, div, img {
     .score-button { font-size: 10vw; }
     .center-image { width: 40vw; }
     .settings-button { font-size: 9vw; }
-    .settings-content { width: 65vw; }
-    .buzzer-button { width: 10vw; height: 10vw; }
+    .settings-content { width: 75vw; }
+    label { font-size: 4vw; }
+    input[type="text"] { width: 30vw; font-size: 4vw; }
+    input[type="number"] { width: 10vw; font-size: 4vw; }
+    input[type="checkbox"] { width: 5vw; height: 5vw; }
+    button#save-settings, button#set-1-minute, button#set-5-minutes, button#set-10-minutes, button#set-20-minutes { font-size: 3.5vw; }
+    .buzzer-button { width: 14vw; height: 14vw; }
     .foul { font-size: 15vw; }
     .tiempos { font-size: 7vw; }
 }
@@ -348,24 +369,31 @@ button, input, textarea, div, img {
     <div class="settings-content">
         <span class="close-btn">&times;</span>
         <h3>Configuración</h3>
-        <label> Minutos: <input type="number" id="minutes" min="0" max="99" value="10"></label>
-        <label>Segundos: <input type="number" id="seconds" min="0" max="59" value="0"></label>
-        <label>Décimas: <input type="number" id="decimals" min="0" max="9" value="0"></label>
-        <label>Nombre del equipo local: <input type="text" id="local-team-name" value="Yuncos"></label>
-        <label>Nombre del equipo visitante: <input type="text" id="visitor-team-name" value="Visitante"></label>
-        <button id="set-1-minute">1 Minuto</button>
-        <button id="set-5-minutes">5 Minutos</button>
-        <button id="set-10-minutes">10 Minutos</button>
-        <button id="set-20-minutes">20 Minutos</button>
-        <button id="save-settings">Guardar</button>
+        <label class="label-inline"> Mostrar hora real: <input type="checkbox" id="show-real-time"></label>
+        <hr style="border-color: #444; margin: 1.5vh 0;">
+        <label class="label-inline"> Minutos: <input type="number" id="minutes" min="0" max="99" value="10"></label>
+        <label class="label-inline">Segundos: <input type="number" id="seconds" min="0" max="59" value="0"></label>
+        <label class="label-inline">Décimas: <input type="number" id="decimals" min="0" max="9" value="0"></label>
+        <label class="label-inline">Equipo local: <input type="text" id="local-team-name" value="Yuncos"></label>
+        <label class="label-inline">Equipo visitante: <input type="text" id="visitor-team-name" value="Visitante"></label>
+        <div style="margin-top: 2vh;">
+            <button id="set-1-minute">1 M</button>
+            <button id="set-5-minutes">5 M</button>
+            <button id="set-10-minutes">10 M</button>
+            <button id="set-20-minutes">20 M</button>
+        </div>
+        <button id="save-settings" style="width: 100%; margin-top: 2.5vh; background: #ffcc00; font-weight: bold;">Guardar</button>
     </div>
 </div>
 
 <audio id="buzzer" src="buzzer.mp3" preload="auto"></audio>
 
 <script>
-let minutes = 10, seconds = 0, decimals = 0;
-let timerRunning = false, timerInterval;
+let totalMilliSeconds = 10 * 60 * 1000; 
+let timerRunning = false, animationFrameId, realTimeInterval = null;
+let startTime = 0, timeRemainingAtPause = totalMilliSeconds;
+let showRealTimeMode = false;
+
 let localScore = 0, visitorScore = 0;
 let localFouls = 0, visitorFouls = 0;
 let tiemposLocal = 0, tiemposVisitante = 0;
@@ -375,6 +403,10 @@ const localFoulsElemento = document.getElementById('local-fouls');
 const visitorFoulsElemento = document.getElementById('visitor-fouls');
 const tiemposLocalElemento = document.getElementById('tiempos-local');
 const tiemposVisitanteElemento = document.getElementById('tiempos-visitante');
+const fallbackBuzzer = document.getElementById('buzzer');
+
+let audioCtx = null;
+let audioBuffer = null;
 
 function updateScores(){
     document.getElementById('local-score').textContent = localScore;
@@ -384,7 +416,6 @@ function updateScores(){
 function updateFouls(){
     localFoulsElemento.textContent = localFouls;
     visitorFoulsElemento.textContent = visitorFouls;
-    // Mantiene la lógica de color original del CSS
     localFoulsElemento.style.color = localFouls===4 ? 'yellow' : localFouls===5 ? 'red' : 'white';
     visitorFoulsElemento.style.color = visitorFouls===4 ? 'yellow' : visitorFouls===5 ? 'red' : 'white';
 }
@@ -400,103 +431,118 @@ function manejarTiempos(equipo){
     actualizarTiempos();
 }
 
-function updateTimer(){
-    let displaySeconds = seconds < 10 && minutes === 0 ? `${seconds}` : seconds < 10 ? `0${seconds}` : seconds;
-    let displayTime = minutes > 0 ? `${minutes}:${displaySeconds}` : `${displaySeconds}.${decimals}`;
-    document.getElementById('timer').textContent = displayTime;
-}
+function updateTimerDisplay(){
+    if (showRealTimeMode) {
+        let now = new Date();
+        let hrs = now.getHours().toString().padStart(2, '0');
+        let mins = now.getMinutes().toString().padStart(2, '0');
+        // Eliminados los segundos de la visualización
+        document.getElementById('timer').textContent = `${hrs}:${mins}`;
+        return;
+    }
 
-function runTimer(){
-    if(!timerRunning) return;
-    if(minutes===0 && seconds===0 && decimals===0){
-        clearInterval(timerInterval); timerRunning=false; updateTimer(); playBuzzer();
-    } else{
-        decimals--;
-        if(decimals<0){
-            decimals=9; seconds--;
-            if(seconds<0 && minutes>0){
-                seconds=59; minutes--;
-            } else if(seconds<0 && minutes===0){
-                seconds=0; decimals=0;
-            }
-        }
-        updateTimer();
+    let currentMs = Math.max(0, timerRunning ? timeRemainingAtPause - (performance.now() - startTime) : timeRemainingAtPause);
+    
+    let totalSeconds = Math.ceil(currentMs / 100);
+    let min = Math.floor(totalSeconds / 600);
+    let sec = Math.floor((totalSeconds % 600) / 10);
+    let dec = Math.floor(totalSeconds % 10);
+
+    let displaySeconds = sec < 10 && min === 0 ? `${sec}` : sec < 10 ? `0${sec}` : sec;
+    let displayTime = min > 0 ? `${min}:${displaySeconds}` : `${displaySeconds}.${dec}`;
+    
+    document.getElementById('timer').textContent = displayTime;
+    
+    if (currentMs <= 0 && timerRunning) {
+        timerRunning = false;
+        timeRemainingAtPause = 0;
+        document.getElementById('timer').textContent = "0.0";
+        playBuzzer();
     }
 }
 
-// ** FUNCIÓN CORREGIDA PARA EL TIMBRE (Detiene el bucle silencioso) **
+function runTimerLoop() {
+    if (!timerRunning || showRealTimeMode) return;
+    updateTimerDisplay();
+    if (timeRemainingAtPause - (performance.now() - startTime) > 0) {
+        animationFrameId = requestAnimationFrame(runTimerLoop);
+    }
+}
+
+function syncInputsFromMilliSeconds() {
+    let totalSeconds = Math.ceil(timeRemainingAtPause / 100);
+    document.getElementById('minutes').value = Math.floor(totalSeconds / 600);
+    document.getElementById('seconds').value = Math.floor((totalSeconds % 600) / 10);
+    document.getElementById('decimals').value = Math.floor(totalSeconds % 10);
+    document.getElementById('show-real-time').checked = showRealTimeMode;
+}
+
+function inicializarWebAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    fetch('buzzer.mp3')
+        .then(response => response.arrayBuffer())
+        .then(data => audioCtx.decodeAudioData(data))
+        .then(buffer => { audioBuffer = buffer; })
+        .catch(err => console.log("Web Audio fallback activo:", err));
+}
+
 function playBuzzer(){
-    const buzzer=document.getElementById('buzzer'); 
-    
-    // 1. Detenemos el bucle silencioso
-    buzzer.pause(); 
-    buzzer.currentTime = 0; 
-
-    // 2. Subimos el volumen y reproducimos el timbre
-    buzzer.volume = 1.0; 
-    buzzer.loop = false;
-    
-    buzzer.play().catch(e=>console.log("Error al intentar reproducir el timbre:", e));
-    
-    // 3. Cuando termina de sonar, reiniciamos el bucle silencioso
-    buzzer.onended = () => {
-        restartSilentStream(); 
-        buzzer.onended = null;
-    };
+    if (audioCtx && audioBuffer) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const bufferSource = audioCtx.createBufferSource();
+        bufferSource.buffer = audioBuffer;
+        bufferSource.connect(audioCtx.destination);
+        bufferSource.start(0);
+    } else {
+        fallbackBuzzer.volume = 1.0;
+        fallbackBuzzer.loop = false;
+        fallbackBuzzer.currentTime = 0;
+        fallbackBuzzer.play().catch(e => {});
+    }
 }
 
-// ** FUNCIÓN QUE INICIA EL STREAM SILENCIOSO CONSTANTE (VOLUMEN 0.0001) **
-function initializeContinuousAudio() {
-    const buzzer = document.getElementById('buzzer');
-    
-    buzzer.loop = true;
-    
-    // Volumen ajustado a 0.0001 (ultrasilencioso)
-    buzzer.volume = 0.0001; 
-    
-    buzzer.play()
-        .then(() => {})
-        .catch(error => {
-            // Si falla el autoplay, restauramos el volumen normal en caso de que el usuario tenga que tocar el botón
-            buzzer.volume = 1.0; 
-        });
+function desbloquearAudio() {
+    inicializarWebAudio();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    fallbackBuzzer.play().then(() => {
+        fallbackBuzzer.pause();
+        fallbackBuzzer.currentTime = 0;
+    }).catch(e => {});
+    document.removeEventListener('touchstart', desbloquearAudio);
+    document.removeEventListener('click', desbloquearAudio);
 }
 
-// ** FUNCIÓN PARA REINICIAR EL STREAM SILENCIOSO (VOLUMEN 0.0001) **
-function restartSilentStream() {
-    const buzzer = document.getElementById('buzzer');
-    
-    buzzer.loop = true;
-    buzzer.volume = 0.0001; // Volumen ajustado
-    buzzer.currentTime = 0;
-    buzzer.play().catch(e => {}); 
-}
-
-// Escucha el evento 'touchstart' (o click) para inicializar el audio
-document.addEventListener('touchstart', function initialAudioInit(e) {
-    initializeContinuousAudio();
-    document.removeEventListener('touchstart', initialAudioInit);
-});
-document.addEventListener('click', function initialAudioInitClick(e) {
-    initializeContinuousAudio();
-    document.removeEventListener('click', initialAudioInitClick);
-});
-
+document.addEventListener('touchstart', desbloquearAudio);
+document.addEventListener('click', desbloquearAudio);
 
 function updateQuarter(){
     let text = "";
-    if(quarter <= 4) text = quarter + "º Cuarto";
-    else if(quarter === 5) text = "Prórroga";
-    else text = "Final";
+    if(quarter === 1) text = "1º Cuarto";
+    else if(quarter === 2) text = "2º Cuarto";
+    else if(quarter === 3) text = "Descanso";
+    else if(quarter === 4) text = "3º Cuarto";
+    else if(quarter === 5) text = "4º Cuarto";
+    else text = "Prórroga";
     document.getElementById('quarter').textContent = text;
 }
 
-// Eventos
 document.getElementById('timer-control').addEventListener('click', ()=>{
+    if (showRealTimeMode) return; 
+    if (timeRemainingAtPause <= 0) return;
+    
     timerRunning = !timerRunning;
-    if(timerRunning) timerInterval = setInterval(runTimer,100);
-    else clearInterval(timerInterval);
+    if(timerRunning) {
+        startTime = performance.now();
+        runTimerLoop();
+    } else {
+        cancelAnimationFrame(animationFrameId);
+        timeRemainingAtPause -= (performance.now() - startTime);
+        if (timeRemainingAtPause < 0) timeRemainingAtPause = 0;
+        updateTimerDisplay();
+    }
 });
+
 document.getElementById('fullscreen-btn').addEventListener('click', ()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen());
 document.getElementById('play-buzzer-btn').addEventListener('click', playBuzzer);
 
@@ -511,47 +557,44 @@ document.getElementById('visitor-fouls').addEventListener('click', ()=>{visitorF
 document.getElementById('tiempos-local').addEventListener('click', ()=> manejarTiempos('local'));
 document.getElementById('tiempos-visitante').addEventListener('click', ()=> manejarTiempos('visitante'));
 
-document.getElementById('quarter').addEventListener('click', ()=>{quarter++; if(quarter>5) quarter=1; updateQuarter();});
+document.getElementById('quarter').addEventListener('click', ()=>{quarter++; if(quarter>6) quarter=1; updateQuarter();});
 
 document.getElementById('save-settings').addEventListener('click', ()=>{
-    minutes = parseInt(document.getElementById('minutes').value) || 0;
-    seconds = parseInt(document.getElementById('seconds').value) || 0;
-    decimals = parseInt(document.getElementById('decimals').value) || 0;
+    showRealTimeMode = document.getElementById('show-real-time').checked;
+    
+    if (showRealTimeMode) {
+        if(timerRunning){ cancelAnimationFrame(animationFrameId); timerRunning=false; }
+        updateTimerDisplay(); // Renderizado instantáneo
+        if(!realTimeInterval) {
+            realTimeInterval = setInterval(updateTimerDisplay, 1000);
+        }
+    } else {
+        if(realTimeInterval) { clearInterval(realTimeInterval); realTimeInterval = null; }
+        
+        let m = parseInt(document.getElementById('minutes').value) || 0;
+        let s = parseInt(document.getElementById('seconds').value) || 0;
+        let d = parseInt(document.getElementById('decimals').value) || 0;
+        
+        if(timerRunning){ cancelAnimationFrame(animationFrameId); timerRunning=false; }
+        timeRemainingAtPause = ((m * 60) + s) * 1000 + (d * 100);
+    }
+    
     document.getElementById('local-team').querySelector('h2').textContent = document.getElementById('local-team-name').value;
     document.getElementById('visitor-team').querySelector('h2').textContent = document.getElementById('visitor-team-name').value;
-    if(timerRunning){clearInterval(timerInterval); timerRunning=false;}
-    updateTimer(); closeSettingsModal();
+    
+    updateTimerDisplay(); closeSettingsModal();
 });
 
-document.getElementById('set-1-minute').addEventListener('click', ()=>{
-    document.getElementById('minutes').value=1;
-    document.getElementById('seconds').value=0;
-    document.getElementById('decimals').value=0;
-});
+document.getElementById('set-1-minute').addEventListener('click', ()=>{ document.getElementById('minutes').value=1; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
+document.getElementById('set-5-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=5; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
+document.getElementById('set-10-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=10; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
+document.getElementById('set-20-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=20; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
 
-document.getElementById('set-5-minutes').addEventListener('click', ()=>{
-    document.getElementById('minutes').value=5;
-    document.getElementById('seconds').value=0;
-    document.getElementById('decimals').value=0;
-});
-
-document.getElementById('set-10-minutes').addEventListener('click', ()=>{
-    document.getElementById('minutes').value=10;
-    document.getElementById('seconds').value=0;
-    document.getElementById('decimals').value=0;
-});
-
-document.getElementById('set-20-minutes').addEventListener('click', ()=>{
-    document.getElementById('minutes').value=20;
-    document.getElementById('seconds').value=0;
-    document.getElementById('decimals').value=0;
-});
-
-document.querySelector('.settings-button').addEventListener('click', ()=>document.querySelector('.settings-modal').style.display='flex');
+document.querySelector('.settings-button').addEventListener('click', ()=>{ syncInputsFromMilliSeconds(); document.querySelector('.settings-modal').style.display='flex'; });
 document.querySelector('.close-btn').addEventListener('click', closeSettingsModal);
 function closeSettingsModal(){document.querySelector('.settings-modal').style.display='none';}
 
-updateScores(); updateFouls(); actualizarTiempos(); updateTimer(); updateQuarter();
+updateScores(); updateFouls(); actualizarTiempos(); updateTimerDisplay(); updateQuarter();
 </script>
 </body>
 </html>
