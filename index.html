@@ -164,6 +164,8 @@ body {
     height: auto;
     margin-top: -2vh;
     cursor: pointer;
+    -webkit-touch-callout: none; /* Desactiva el menú emergente en iOS/Android */
+    pointer-events: auto;        /* Permite que sigan funcionando los clicks normales */
 }
 
 .settings-button {
@@ -436,7 +438,6 @@ function updateTimerDisplay(){
         let now = new Date();
         let hrs = now.getHours().toString().padStart(2, '0');
         let mins = now.getMinutes().toString().padStart(2, '0');
-        // Eliminados los segundos de la visualización
         document.getElementById('timer').textContent = `${hrs}:${mins}`;
         return;
     }
@@ -564,7 +565,7 @@ document.getElementById('save-settings').addEventListener('click', ()=>{
     
     if (showRealTimeMode) {
         if(timerRunning){ cancelAnimationFrame(animationFrameId); timerRunning=false; }
-        updateTimerDisplay(); // Renderizado instantáneo
+        updateTimerDisplay(); 
         if(!realTimeInterval) {
             realTimeInterval = setInterval(updateTimerDisplay, 1000);
         }
