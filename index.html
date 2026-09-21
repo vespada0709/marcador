@@ -164,8 +164,11 @@ body {
     height: auto;
     margin-top: -2vh;
     cursor: pointer;
-    -webkit-touch-callout: none; /* Desactiva el menú emergente en iOS/Android */
-    pointer-events: auto;        /* Permite que sigan funcionando los clicks normales */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    pointer-events: auto;        
 }
 
 .settings-button {
@@ -401,6 +404,9 @@ let localFouls = 0, visitorFouls = 0;
 let tiemposLocal = 0, tiemposVisitante = 0;
 let quarter = 1;
 
+// Variable para controlar que la bocina suene solo una vez cuando se agote el tiempo
+let buzzerTriggered = false;
+
 const localFoulsElemento = document.getElementById('local-fouls');
 const visitorFoulsElemento = document.getElementById('visitor-fouls');
 const tiemposLocalElemento = document.getElementById('tiempos-local');
@@ -454,11 +460,17 @@ function updateTimerDisplay(){
     
     document.getElementById('timer').textContent = displayTime;
     
+    // RETARDO COMPENSADO: Se dispara 500 ms antes para compensar el HDMI inalámbrico
+    let compensationMs = 500; 
+    if (currentMs <= compensationMs && timerRunning && !buzzerTriggered) {
+        buzzerTriggered = true;
+        playBuzzer();
+    }
+
     if (currentMs <= 0 && timerRunning) {
         timerRunning = false;
         timeRemainingAtPause = 0;
         document.getElementById('timer').textContent = "0.0";
-        playBuzzer();
     }
 }
 
@@ -528,13 +540,20 @@ function updateQuarter(){
     document.getElementById('quarter').textContent = text;
 }
 
-document.getElementById('timer-control').addEventListener('click', ()=>{
+const timerControlImg = document.getElementById('timer-control');
+
+timerControlImg.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+});
+
+timerControlImg.addEventListener('click', ()=>{
     if (showRealTimeMode) return; 
     if (timeRemainingAtPause <= 0) return;
     
     timerRunning = !timerRunning;
     if(timerRunning) {
         startTime = performance.now();
+        buzzerTriggered = false; // Reiniciamos el aviso al poner en marcha el reloj
         runTimerLoop();
     } else {
         cancelAnimationFrame(animationFrameId);
@@ -578,6 +597,7 @@ document.getElementById('save-settings').addEventListener('click', ()=>{
         
         if(timerRunning){ cancelAnimationFrame(animationFrameId); timerRunning=false; }
         timeRemainingAtPause = ((m * 60) + s) * 1000 + (d * 100);
+        buzzerTriggered = false;
     }
     
     document.getElementById('local-team').querySelector('h2').textContent = document.getElementById('local-team-name').value;
@@ -586,10 +606,10 @@ document.getElementById('save-settings').addEventListener('click', ()=>{
     updateTimerDisplay(); closeSettingsModal();
 });
 
-document.getElementById('set-1-minute').addEventListener('click', ()=>{ document.getElementById('minutes').value=1; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
-document.getElementById('set-5-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=5; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
-document.getElementById('set-10-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=10; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
-document.getElementById('set-20-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=20; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; });
+document.getElementById('set-1-minute').addEventListener('click', ()=>{ document.getElementById('minutes').value=1; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; buzzerTriggered = false; });
+document.getElementById('set-5-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=5; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; buzzerTriggered = false; });
+document.getElementById('set-10-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=10; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; buzzerTriggered = false; });
+document.getElementById('set-20-minutes').addEventListener('click', ()=>{ document.getElementById('minutes').value=20; document.getElementById('seconds').value=0; document.getElementById('decimals').value=0; buzzerTriggered = false; });
 
 document.querySelector('.settings-button').addEventListener('click', ()=>{ syncInputsFromMilliSeconds(); document.querySelector('.settings-modal').style.display='flex'; });
 document.querySelector('.close-btn').addEventListener('click', closeSettingsModal);
